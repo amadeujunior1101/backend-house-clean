@@ -3,8 +3,6 @@ import {} from './main/controllers/client.controller'
 import { clientController } from './infra/containers/client.container'
 import { ClientDTO } from './application/useCases/dtos/createClient.dto'
 import { validate } from 'class-validator'
-import { LocationDTO } from './application/useCases/dtos/location.dto'
-import { plainToClass } from 'class-transformer'
 
 const routes = express.Router()
 
@@ -25,14 +23,7 @@ routes.get('/clients', async (req: Request, res: Response) => {
 })
 
 routes.post('/clients/distance', async (req: Request, res: Response) => {
-  const locationDto = plainToClass(LocationDTO, req.body)
-  const errors = await validate(locationDto)
-
-  if (errors.length > 0) {
-    return res.status(400).json(errors)
-  }
-
   return clientController.distance(req, res)
 })
 
-export default routes
+export { routes }

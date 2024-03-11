@@ -1,32 +1,41 @@
-import { IsString, IsEmail, IsNotEmpty } from 'class-validator'
+import {
+  IsString,
+  IsEmail,
+  IsNotEmpty,
+  Matches,
+  IsNumber,
+} from 'class-validator'
 import 'reflect-metadata'
 
 export class ClientDTO {
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Nome não pode ser vazio!' })
   name: string
 
-  @IsEmail()
+  @IsEmail({}, { message: 'E-mail deve ser válido!' })
   email: string
 
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Contato deve ter 11 digitos!' })
+  @Matches(/^\d{11}$/, {
+    message: 'O número de telefone deve ter exatamente 11 dígitos.',
+  })
   phone: string
 
-  @IsString()
-  @IsNotEmpty()
-  coordinate_x: string
+  @IsNumber()
+  @IsNotEmpty({ message: 'Escolha a latitude!' })
+  coordinate_x: number
 
-  @IsString()
-  @IsNotEmpty()
-  coordinate_y: string
+  @IsNumber()
+  @IsNotEmpty({ message: 'Escolha a longitude!' })
+  coordinate_y: number
 
   constructor(
     name: string,
     email: string,
     phone: string,
-    coordinate_x: string,
-    coordinate_y: string
+    coordinate_x: number,
+    coordinate_y: number
   ) {
     this.name = name
     this.email = email

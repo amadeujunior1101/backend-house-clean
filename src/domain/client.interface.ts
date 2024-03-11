@@ -5,4 +5,12 @@ export interface IFilterType {
 export interface IPointWithName {
   name: string
   pos: number
+  phone: string
+}
+
+export interface IPointCartesian {
+  name: string
+  x: number
+  y: number
+  phone: string
 }

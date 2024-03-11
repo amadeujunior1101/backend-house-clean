@@ -1,20 +1,12 @@
-interface IPointCartesian {
-  name: string
-  x: number
-  y: number
-}
-
-interface IPointWithName {
-  name: string
-  pos: number
-}
+import { IPointCartesian, IPointWithName } from '../domain/client.interface'
 
 function convertCartesianPlane(
   name: string,
   latitude: number,
-  longitude: number
+  longitude: number,
+  phone: string
 ): IPointCartesian {
-  return { name, x: longitude, y: latitude }
+  return { name, x: longitude, y: latitude, phone }
 }
 
 function calculateShortestRoute(points: IPointCartesian[]): IPointWithName[] {
@@ -29,7 +21,9 @@ function calculateShortestRoute(points: IPointCartesian[]): IPointWithName[] {
   const startingPoint = 0
 
   // Inicia o algoritmo do Vizinho Mais Próximo
-  let route: IPointWithName[] = [{ name: 'Ponto inicial', pos: startingPoint }]
+  let route: IPointWithName[] = [
+    { name: 'Ponto Inicial(empresa)', pos: startingPoint, phone: '' },
+  ]
 
   while (route.length < positionCount) {
     let currentPoint = route[route.length - 1].pos
@@ -51,21 +45,35 @@ function calculateShortestRoute(points: IPointCartesian[]): IPointWithName[] {
     }
 
     if (pointNext !== -1) {
-      route.push({ name: points[pointNext].name, pos: pointNext })
+      route.push({
+        name: points[pointNext].name,
+        pos: pointNext,
+        phone: points[pointNext].phone,
+      })
     }
   }
 
   // Adiciona o ponto inicial no final para fechar a rota
-  route.push({ name: 'Ponto inicial', pos: startingPoint })
+  route.push({ name: 'Ponto Final(empresa)', pos: startingPoint, phone: '' })
 
   return route
 }
 
 function calculateDynamicRoute(
-  clients: { name: string; latitude: number; longitude: number }[]
+  clients: {
+    name: string
+    latitude: number
+    longitude: number
+    phone: string
+  }[]
 ): IPointWithName[] {
   const pointsCartesian: IPointCartesian[] = clients.map((client) =>
-    convertCartesianPlane(client.name, client.latitude, client.longitude)
+    convertCartesianPlane(
+      client.name,
+      client.latitude,
+      client.longitude,
+      client.phone
+    )
   )
 
   // Calculando a rota mais curta começando sempre do mesmo ponto (primeiro cliente)

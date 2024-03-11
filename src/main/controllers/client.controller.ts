@@ -4,7 +4,7 @@ import { CreateClientUseCase } from '../../application/useCases/createClient.use
 import { ListClientUseCase } from '../../application/useCases/listClient.useCase'
 import { IFilterType, IPointWithName } from '../../domain/client.interface'
 
-export class ClientController {
+class ClientController {
   constructor(
     private readonly createClient: CreateClientUseCase,
     private readonly listClient: ListClientUseCase
@@ -14,7 +14,7 @@ export class ClientController {
     try {
       const result = await this.createClient.execute(req.body)
 
-      res.status(201).json({
+      res.status(result.status).json({
         message: 'Cliente cadastrado com sucesso!',
         clients: result,
       })
@@ -37,10 +37,16 @@ export class ClientController {
   }
 
   distance = async (req: Request, res: Response) => {
-    const clients: { name: string; latitude: number; longitude: number }[] =
-      req.body
+    const clients: {
+      name: string
+      latitude: number
+      longitude: number
+      phone: string
+    }[] = req.body
 
     const route: IPointWithName[] = calculateDynamicRoute(clients)
     res.status(200).json(route)
   }
 }
+
+export { ClientController }
