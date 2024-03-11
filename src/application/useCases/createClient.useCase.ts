@@ -30,8 +30,6 @@ export class CreateClientUseCase {
       const client = new ClientEntity(data)
       const newClient = await this.clientRepository.create(client)
 
-      console.log(newClient)
-
       return responseSuccess(newClient)
     } catch (error: any) {
       if (error.code === '23505' && error.constraint === 'clients_email_key') {
