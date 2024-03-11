@@ -1,5 +1,5 @@
-import routes from './routes'
-import './run-migrations'
+import routes from '../routes'
+import '../data/run-migrations'
 import express, { Request, Response } from 'express'
 import cors from 'cors'
 
